@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Popular Games</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e1e1e1;
+            color: #333;
+        }
+        .header {
+            background-color: #0084dd;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            justify-content: space-between;
+        }
+        .header-left { display: flex; align-items: center; gap: 18px; }
+        .logo { width: 28px; height: 28px; }
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .section-box {
+            background: white;
+            padding: 25px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        h1 {
+            margin: 0 0 20px;
+            font-size: 24px;
+        }
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .popular-card {
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .popular-card:hover {
+            border-color: #0084dd;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        .popular-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            display: block;
+        }
+        .popular-card .card-info {
+            padding: 12px;
+        }
+        .popular-card .card-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .popular-card .card-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-left">
+            <img class="logo" alt="Roblox" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='5' fill='%23e2231a'/%3E%3Ctext x='14' y='21' font-family='Arial' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+            <span style="font-size:16px; font-weight:bold;">Popular Games</span>
+        </div>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <div class="container">
+        <div class="section-box">
+            <h1>Popular Games</h1>
+            <div class="popular-grid" id="popularGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================
+        // EASY TO EDIT - GAMES
+        // =====================================================
+        const games = {
+            DEMO: {
+                name: 'DEMO',
+                desc: 'this is our games demo!1!',
+                image: "https://github.com/epickfr/ncsblox-website/blob/main/gamethumbs/Screenshot%202026-07-26%20192407.png?raw=true"
+            }
+        };
+
+        const popularGames = ['DEMO'];
+        function renderPopular() {
+            const grid = document.getElementById('popularGrid');
+            grid.innerHTML = '';
+
+            popularGames.forEach(id => {
+                const g = games[id];
+                if (!g) return;
+
+                const card = document.createElement('div');
+                card.className = 'popular-card';
+                card.onclick = () => {
+                    window.location.href = 'index.html?game=' + id;
+                };
+                card.innerHTML = `
+                    <img src="${g.image}" alt="${g.name}">
+                    <div class="card-info">
+                        <div class="card-title">${g.name}</div>
+                        <div class="card-desc">${g.desc}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        renderPopular();
+    </script>
+</body>
+</html>
