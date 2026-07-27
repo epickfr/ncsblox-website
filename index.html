@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ncsBloxBetaSite</title>
+    <title>NcsBlox Mockup</title>
     <style>
         body {
             margin: 0;
@@ -11,7 +11,7 @@
             color: #333;
         }
         .header {
-            background-color: #0084dd;
+            background-color: #0074bd;
             height: 50px;
             display: flex;
             align-items: center;
@@ -137,7 +137,7 @@
             text-decoration: none;
             padding: 10px 15px;
         }
-        .sidebar-item:hover { background: #eaf4fd; color: #0084dd; }
+        .sidebar-item:hover { background: #eaf4fd; color: #0074bd; }
         .sidebar-item .s-icon { width: 18px; height: 18px; }
         .sidebar-item.events { color: #e2231a; font-weight: bold; }
         .sidebar-item.events:hover { background: #fdeaea; color: #b01b14; }
@@ -153,7 +153,7 @@
         .section-box { background: white; padding: 20px; margin-bottom: 20px; border: 1px solid #ccc; }
         .home-buttons { display: flex; flex-direction: column; gap: 12px; }
         .home-btn {
-            background: #0084dd;
+            background: #0074bd;
             color: white;
             border: none;
             border-radius: 6px;
@@ -171,7 +171,7 @@
         .back-btn {
             background: none;
             border: none;
-            color: #0084dd;
+            color: #0074bd;
             cursor: pointer;
             font-size: 14px;
             margin-bottom: 15px;
@@ -227,7 +227,7 @@
             overflow: hidden;
         }
         .server-modal-header {
-            background: #0084dd;
+            background: #0074bd;
             color: white;
             padding: 14px 18px;
             display: flex;
@@ -271,7 +271,7 @@
             right: 20px;
             width: 250px;
             height: 40px;
-            background: #0084dd;
+            background: #0074bd;
             color: white;
             display: flex;
             align-items: center;
@@ -286,7 +286,7 @@
     <div class="header">
         <div class="header-left">
             <img id="menuBtn" class="icon" alt="Menu" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Crect x='3' y='5' width='18' height='3' fill='white'/%3E%3Crect x='3' y='10.5' width='18' height='3' fill='white'/%3E%3Crect x='3' y='16' width='18' height='3' fill='white'/%3E%3C/svg%3E">
-            <img class="logo" alt="Roblox" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='5' fill='%23e2231a'/%3E%3Ctext x='14' y='21' font-family='Arial' font-size='19' font-weight='bold' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+            <img class="logo" alt="NCSBLOX" src="https://github.com/epickfr/ncsblox-website/blob/main/ncsbloxlogo.png?raw=true">
             <button class="nav-btn" id="navGames">Games</button>
             <button class="nav-btn" id="navCatalog">Catalog</button>
         </div>
@@ -306,11 +306,6 @@
     </div>
 
     <div class="container">
-        <div class="ad-box">
-            <div class="ad-banner">AERO<br>TRAMPOLINE<br>PARK</div>
-            <div style="font-size: 50px; color: green; font-weight: bold;">↓</div>
-            <button id="adBtn1" style="background: green; color: white; padding: 10px;">CLICK HERE</button>
-        </div>
 
         <div class="sidebar" id="sidebar">
             <div class="sidebar-box">
@@ -320,7 +315,7 @@
                     updates
                 </a>
                 <a class="sidebar-item" href="popular.html" id="sidePopular">
-                    <img class="s-icon" src="https://github.com/MaximumADHD/Roblox-Client-Tracker/blob/roblox/textures/ui/Chat/ChatDown.png?raw=true">
+                    <img class="s-icon" src="https://github.com/MaximumADHD/roblox-Client-Tracker/blob/roblox/textures/ui/Chat/ChatDown.png?raw=true">
                     popular
                 </a>
                 <a class="sidebar-item" href="#" id="sideDiscord">
@@ -352,16 +347,9 @@
             </div>
         </div>
 
-        <div class="ad-box">
-            <div style="height: 200px; background: purple; color: white;">GODS<br>OF<br>GLORY</div>
-            <div style="height: 100px; background: blue; margin-top: 10px;"></div>
-            <button id="adBtn2" style="background: #333; color: white; padding: 8px; margin-top: 10px; width: 100%;">AD CLICK</button>
-        </div>
     </div>
 
-    <div class="chat-box" id="chatBox">Chat</div>
 
-    <!-- SERVER SELECTOR -->
     <div class="modal-overlay" id="serverModal">
         <div class="server-modal">
             <div class="server-modal-header">
@@ -373,9 +361,6 @@
     </div>
 
     <script>
-        // =====================================================
-        // GAMES
-        // =====================================================
         const games = {
             DEMO: {
                 name: 'DEMO',
@@ -386,21 +371,15 @@
             }
         };
 
-        // =====================================================
-        // SERVERS
-        // =====================================================
         const servers = [
             { id: "server1", name: "Server 1", url: "wss://ncsbloxserver.onrender.com" },
             { id: "server2", name: "Server 2", url: "wss://ncsbloxserver.onrender.com" },
             { id: "server3", name: "Server 3 (EU)", url: "wss://ncsbloxserver.onrender.com" }
         ];
 
-        // =====================================================
-        // PROFILE
-        // =====================================================
         function loadProfile() {
-            const name = localStorage.getItem('roblox_name') || 'Guest';
-            const avatar = localStorage.getItem('roblox_avatar') || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28"%3E%3Ccircle cx="14" cy="14" r="14" fill="%23aaa"/%3E%3C/svg%3E';
+            const name = localStorage.getItem('NcsBlox_name') || 'Guest';
+            const avatar = localStorage.getItem('NcsBlox_avatar') || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28"%3E%3Ccircle cx="14" cy="14" r="14" fill="%23aaa"/%3E%3C/svg%3E';
             document.getElementById('headerName').textContent = name;
             document.getElementById('headerAvatar').src = avatar;
         }
@@ -410,9 +389,6 @@
             window.location.href = 'profile.html';
         });
 
-        // =====================================================
-        // HOME BUTTONS
-        // =====================================================
         function renderHomeButtons() {
             const container = document.getElementById('homeButtons');
             container.innerHTML = '';
@@ -426,10 +402,7 @@
             }
         }
         renderHomeButtons();
-
-        // =====================================================
-        // BASIC UI
-        // =====================================================
+		
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
         const searchBar = document.getElementById('searchBar');
@@ -463,9 +436,6 @@
             currentGame = null;
         }
 
-        // =====================================================
-        // SEARCH
-        // =====================================================
         function doSearch(query) {
             query = query.toLowerCase().trim();
             if (!query) {
@@ -510,7 +480,7 @@
         // GET EQUIPPED DATA (matches your profile.html)
         // =====================================================
         function getEquippedData() {
-            const equipped = JSON.parse(localStorage.getItem('roblox_equipped') || '{}');
+            const equipped = JSON.parse(localStorage.getItem('NcsBlox_equipped') || '{}');
 
             // profile.html now saves:
             // equipped.faces = "smile"          (single string)
@@ -565,7 +535,7 @@
             if (!currentGame) return;
 
             const g = games[currentGame];
-            const username = localStorage.getItem('roblox_name') || 'Guest';
+            const username = localStorage.getItem('NcsBlox_name') || 'Guest';
             const equipped = getEquippedData();
 
             const params = new URLSearchParams({
