@@ -379,7 +379,7 @@
 
         // ========== CATALOG LOGIC ==========
         let currentCategory = "faces";
-        let equipped = JSON.parse(localStorage.getItem("roblox_equipped") || "{}");
+        let equipped = JSON.parse(localStorage.getItem("NcsBlox_equipped") || "{}");
 
         // Migrate old single-accessory format → array
         if (equipped.accessories && !Array.isArray(equipped.accessories)) {
@@ -387,7 +387,7 @@
         }
         if (!equipped.accessories) equipped.accessories = [];
 
-        document.getElementById("nameInput").value = localStorage.getItem("roblox_name") || "";
+        document.getElementById("nameInput").value = localStorage.getItem("NcsBlox_name") || "";
 
         function showPreview(item) {
             document.getElementById("previewName").textContent = item.name;
@@ -487,7 +487,7 @@
                             showPreview(item);
                         }
                     }
-                    localStorage.setItem("roblox_equipped", JSON.stringify(equipped));
+                    localStorage.setItem("NcsBlox_equipped", JSON.stringify(equipped));
                     renderItems();
                     updateEquippedList();
                 };
@@ -507,11 +507,11 @@
 
         document.getElementById("saveBtn").addEventListener("click", () => {
             const name = document.getElementById("nameInput").value.trim() || "Guest";
-            localStorage.setItem("roblox_name", name);
+            localStorage.setItem("NcsBlox_name", name);
 
             if (equipped.faces) {
                 const face = catalog.faces.find(f => f.id === equipped.faces);
-                if (face) localStorage.setItem("roblox_avatar", face.image);
+                if (face) localStorage.setItem("NcsBlox_avatar", face.image);
             }
 
             document.getElementById("status").textContent = "Saved!";
