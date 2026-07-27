@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e1e1e1;
+            color: #333;
+        }
+        .header {
+            background: #0084dd;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { margin: 0; font-size: 18px; }
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .container {
+            max-width: 950px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .left-panel { width: 280px; flex-shrink: 0; }
+        .preview-box {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .item-preview {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            position: relative;
+        }
+        .item-preview img,
+        .item-preview canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .item-preview canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .preview-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            min-height: 24px;
+        }
+        .name-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .save-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0084dd;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .save-btn:hover { background: #006bb5; }
+        .status {
+            margin-top: 10px;
+            font-size: 13px;
+            color: green;
+            min-height: 18px;
+        }
+
+        .equipped-box {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .equipped-box h3 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .equipped-item {
+            font-size: 13px;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .equipped-item:last-child { border-bottom: none; }
+
+        .right-panel {
+            flex: 1;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 8px 16px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .tab.active {
+            background: #0084dd;
+            color: white;
+        }
+        .tab:hover:not(.active) { background: #e0e0e0; }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 14px;
+        }
+        .item {
+            background: #f7f7f7;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .item:hover {
+            border-color: #0084dd;
+            background: #eaf4fd;
+        }
+        .item.selected {
+            border-color: #2ecc71;
+            background: #e8f8f0;
+        }
+        .item .thumb-3d {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 8px;
+            background: #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .item .thumb-3d canvas {
+            width: 80px !important;
+            height: 80px !important;
+        }
+        .item img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            background: #ddd;
+        }
+        .item .item-name {
+            font-size: 13px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Catalog</h1>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <div class="container">
+        <div class="left-panel">
+            <div class="preview-box">
+                <div class="item-preview" id="previewContainer">
+                    <img id="previewImg" src="" alt="Preview">
+                    <canvas id="previewCanvas" style="display:none;"></canvas>
+                </div>
+                <div class="preview-name" id="previewName">Select an item</div>
+
+                <input type="text" class="name-input" id="nameInput" maxlength="20" placeholder="Your name">
+                <button class="save-btn" id="saveBtn">Save Name & Items</button>
+                <div class="status" id="status"></div>
+            </div>
+
+            <div class="equipped-box">
+                <h3>Equipped</h3>
+                <div id="equippedList">Nothing yet</div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="tabs">
+                <button class="tab active" data-category="faces">Faces</button>
+                <button class="tab" data-category="shirts">Shirts</button>
+                <button class="tab" data-category="accessories">Accessories</button>
+            </div>
+            <div class="items-grid" id="itemsGrid"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+
+    <script>
+        const catalog = {
+            faces: [
+                { id: "smile", name: "smile", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face1.png?raw=true" },
+                { id: "Grumpy", name: "Grumpy", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face10.png?raw=true" },
+                { id: "Pout", name: "Pout", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face3.png?raw=true" },
+                { id: "dizzo", name: "Dizzo", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face4.png?raw=true" },
+                { id: "drowsy", name: "Drowsy", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face5.png?raw=true" },
+                { id: "derp", name: "Derp", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face6.png?raw=true" },
+                { id: "epick", name: "Epick", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face7.png?raw=true" },
+                { id: "sad", name: "Sad", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face8.png?raw=true" },
+                { id: "nerd", name: "Nerd", image: "https://github.com/epickfr/ncsblox-website/blob/main/faces/face9.png?raw=true" }
+            ],
+            shirts: [
+                { id: "coolguy", name: "coolguy", image: "https://github.com/epickfr/ncsblox-website/blob/main/tshirts/cool-guy.png?raw=true" },
+				{ id: "plumer", name: "plumer", image: "https://github.com/epickfr/ncsblox-website/blob/main/tshirts/plumer.png?raw=true" },
+				{ id: "tux", name: "tux", image: "https://github.com/epickfr/ncsblox-website/blob/main/tshirts/tux.png?raw=true" },
+                { id: "kats", name: "i❤️kats", image: "https://github.com/epickfr/ncsblox-website/blob/main/tshirts/Sprite-0001.png?raw=true" }
+            ],
+            accessories: [
+                {
+                    id: "tophat",
+                    name: "tophat",
+                    model: "https://raw.githubusercontent.com/epickfr/ncsblox-website/refs/heads/main/3d%20modelz/tophat.obj"
+                },
+                {
+                    id: "tetri",
+                    name: "tetri",
+                    model: "https://raw.githubusercontent.com/epickfr/ncsblox-website/refs/heads/main/3d%20modelz/tetri.obj"
+                },
+            ]
+        };
+
+        // ========== BIG PREVIEW 3D ==========
+        let bigScene, bigCamera, bigRenderer, bigModel, bigAnimId;
+        let isDragging = false, prevX = 0;
+
+        function initBig3D() {
+            const canvas = document.getElementById("previewCanvas");
+            bigScene = new THREE.Scene();
+            bigScene.background = new THREE.Color(0xf0f0f0);
+
+            bigCamera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+            bigCamera.position.z = 5;
+
+            bigRenderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+            bigRenderer.setSize(180, 180);
+
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(5, 5, 5);
+            bigScene.add(light);
+            bigScene.add(new THREE.AmbientLight(0x404040));
+
+            canvas.addEventListener("mousedown", e => {
+                isDragging = true;
+                prevX = e.clientX;
+            });
+            window.addEventListener("mouseup", () => isDragging = false);
+            window.addEventListener("mousemove", e => {
+                if (isDragging && bigModel) {
+                    bigModel.rotation.y += (e.clientX - prevX) * 0.01;
+                    prevX = e.clientX;
+                }
+            });
+        }
+
+        function loadBigModel(url) {
+            if (bigModel) {
+                bigScene.remove(bigModel);
+                bigModel = null;
+            }
+            new THREE.OBJLoader().load(url, obj => {
+                const box = new THREE.Box3().setFromObject(obj);
+                const size = box.getSize(new THREE.Vector3());
+                const scale = 2.5 / Math.max(size.x, size.y, size.z);
+                obj.scale.setScalar(scale);
+                obj.position.sub(box.getCenter(new THREE.Vector3()).multiplyScalar(scale));
+                bigModel = obj;
+                bigScene.add(obj);
+            });
+        }
+
+        function animateBig() {
+            bigAnimId = requestAnimationFrame(animateBig);
+            if (bigModel && !isDragging) bigModel.rotation.y += 0.008;
+            bigRenderer.render(bigScene, bigCamera);
+        }
+
+        function showBig3D(url) {
+            document.getElementById("previewImg").style.display = "none";
+            document.getElementById("previewCanvas").style.display = "block";
+            if (!bigRenderer) initBig3D();
+            loadBigModel(url);
+            cancelAnimationFrame(bigAnimId);
+            animateBig();
+        }
+
+        function showBigImage(url) {
+            document.getElementById("previewCanvas").style.display = "none";
+            document.getElementById("previewImg").style.display = "block";
+            document.getElementById("previewImg").src = url || "";
+            cancelAnimationFrame(bigAnimId);
+        }
+
+        // ========== SMALL THUMBNAIL 3D ==========
+        const thumbRenderers = [];
+
+        function createThumb3D(container, modelUrl) {
+            const canvas = document.createElement("canvas");
+            container.appendChild(canvas);
+
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xdddddd);
+
+            const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.z = 4;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+            renderer.setSize(80, 80);
+
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(3, 3, 3);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0x404040));
+
+            let model = null;
+            new THREE.OBJLoader().load(modelUrl, obj => {
+                const box = new THREE.Box3().setFromObject(obj);
+                const size = box.getSize(new THREE.Vector3());
+                const scale = 1.8 / Math.max(size.x, size.y, size.z);
+                obj.scale.setScalar(scale);
+                obj.position.sub(box.getCenter(new THREE.Vector3()).multiplyScalar(scale));
+                model = obj;
+                scene.add(obj);
+            });
+
+            function spin() {
+                requestAnimationFrame(spin);
+                if (model) model.rotation.y += 0.015;
+                renderer.render(scene, camera);
+            }
+            spin();
+
+            thumbRenderers.push({ renderer, scene, camera });
+        }
+
+        // ========== CATALOG LOGIC ==========
+        let currentCategory = "faces";
+        let equipped = JSON.parse(localStorage.getItem("roblox_equipped") || "{}");
+
+        // Migrate old single-accessory format → array
+        if (equipped.accessories && !Array.isArray(equipped.accessories)) {
+            equipped.accessories = [equipped.accessories];
+        }
+        if (!equipped.accessories) equipped.accessories = [];
+
+        document.getElementById("nameInput").value = localStorage.getItem("roblox_name") || "";
+
+        function showPreview(item) {
+            document.getElementById("previewName").textContent = item.name;
+            if (item.model) {
+                showBig3D(item.model);
+            } else {
+                showBigImage(item.image);
+            }
+        }
+
+        function updateEquippedList() {
+            const list = document.getElementById("equippedList");
+            let html = "";
+
+            // faces & shirts (single)
+            for (const cat of ["faces", "shirts"]) {
+                const id = equipped[cat];
+                if (!id) continue;
+                const item = catalog[cat]?.find(i => i.id === id);
+                if (item) html += `<div class="equipped-item"><b>${cat}:</b> ${item.name}</div>`;
+            }
+
+            // accessories (multiple)
+            if (Array.isArray(equipped.accessories) && equipped.accessories.length) {
+                const names = equipped.accessories.map(id => {
+                    const item = catalog.accessories?.find(i => i.id === id);
+                    return item ? item.name : id;
+                });
+                html += `<div class="equipped-item"><b>accessories:</b> ${names.join(", ")}</div>`;
+            }
+
+            list.innerHTML = html || "Nothing yet";
+        }
+
+        function renderItems() {
+            const grid = document.getElementById("itemsGrid");
+            grid.innerHTML = "";
+
+            // clean old thumb renderers
+            thumbRenderers.length = 0;
+
+            const items = catalog[currentCategory] || [];
+            const isAccessories = currentCategory === "accessories";
+
+            items.forEach(item => {
+                let isSelected = false;
+                if (isAccessories) {
+                    isSelected = Array.isArray(equipped.accessories) && equipped.accessories.includes(item.id);
+                } else {
+                    isSelected = equipped[currentCategory] === item.id;
+                }
+
+                const div = document.createElement("div");
+                div.className = "item" + (isSelected ? " selected" : "");
+
+                if (item.model) {
+                    // 3D thumbnail
+                    div.innerHTML = `<div class="thumb-3d"></div><div class="item-name">${item.name}</div>`;
+                    const thumbContainer = div.querySelector(".thumb-3d");
+                    createThumb3D(thumbContainer, item.model);
+                } else {
+                    // normal image
+                    div.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-name">${item.name}</div>
+                    `;
+                }
+
+                div.onclick = () => {
+                    if (isAccessories) {
+                        // multi-select for accessories
+                        if (!Array.isArray(equipped.accessories)) equipped.accessories = [];
+                        const idx = equipped.accessories.indexOf(item.id);
+                        if (idx >= 0) {
+                            equipped.accessories.splice(idx, 1);
+                            if (equipped.accessories.length === 0) {
+                                document.getElementById("previewName").textContent = "Select an item";
+                                showBigImage("");
+                            } else {
+                                // show the last remaining one
+                                const lastId = equipped.accessories[equipped.accessories.length - 1];
+                                const lastItem = catalog.accessories.find(i => i.id === lastId);
+                                if (lastItem) showPreview(lastItem);
+                            }
+                        } else {
+                            equipped.accessories.push(item.id);
+                            showPreview(item);
+                        }
+                    } else {
+                        // single-select for faces / shirts
+                        if (equipped[currentCategory] === item.id) {
+                            delete equipped[currentCategory];
+                            document.getElementById("previewName").textContent = "Select an item";
+                            showBigImage("");
+                        } else {
+                            equipped[currentCategory] = item.id;
+                            showPreview(item);
+                        }
+                    }
+                    localStorage.setItem("roblox_equipped", JSON.stringify(equipped));
+                    renderItems();
+                    updateEquippedList();
+                };
+
+                grid.appendChild(div);
+            });
+        }
+
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.addEventListener("click", () => {
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                currentCategory = tab.dataset.category;
+                renderItems();
+            });
+        });
+
+        document.getElementById("saveBtn").addEventListener("click", () => {
+            const name = document.getElementById("nameInput").value.trim() || "Guest";
+            localStorage.setItem("roblox_name", name);
+
+            if (equipped.faces) {
+                const face = catalog.faces.find(f => f.id === equipped.faces);
+                if (face) localStorage.setItem("roblox_avatar", face.image);
+            }
+
+            document.getElementById("status").textContent = "Saved!";
+            setTimeout(() => document.getElementById("status").textContent = "", 2000);
+        });
+
+        updateEquippedList();
+        renderItems();
+
+        if (catalog.faces[0]) showPreview(catalog.faces[0]);
+    </script>
+</body>
+</html>
